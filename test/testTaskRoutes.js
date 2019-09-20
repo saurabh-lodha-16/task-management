@@ -1,21 +1,23 @@
 const request = require('supertest');
 const app = require('../app');
+import { getUserId } from '../testFunctions/generateTestUser';
+import { getTaskId } from '../testFunctions/generateTestTask';
 
-describe('GET /tasks', function () {
+describe('GET Tasks', function () {
   it('respond with json containing a list of all tasks', function (done) {
     request(app)
       .get('/tasks')
       .set('Accept', 'application/json')
       .expect('Content-Type', /json/)
-      .expect(200, done);
+      .expect(200, done)
   });
 });
 
-describe('POST /tasks', function () {
+describe('Add Tasks', async function () {
   let data = {
     title: 'Book Event',
     description: 'Book event for football',
-    user_id: 'cd1eac6a-3637-4fe5-8722-f7c5fddbf00d',
+    user_id: await getUserId(),
   }
   it('respond with 200 created', function (done) {
     request(app)
@@ -30,8 +32,7 @@ describe('POST /tasks', function () {
       });
   });
 });
-
-describe('POST /tasks', function () {
+describe('Add tasks', function () {
   let data = {}
   it('respond with 500 not created', function (done) {
     request(app)
@@ -48,12 +49,12 @@ describe('POST /tasks', function () {
   });
 });
 
-describe('PUT /tasks', function () {
+describe('Update tasks', async function () {
   const data = {
     title: 'Book Hall',
     description: 'Book event for football',
   }
-  let taskId = '90491fbd-ba8f-45bb-b591-231445f0900d'
+  let taskId = await getTaskId()
   it('respond with 200 updated', function (done) {
     request(app)
       .put(`/tasks/${taskId}`)
@@ -68,9 +69,9 @@ describe('PUT /tasks', function () {
   });
 });
 
-describe('PUT /tasks', function () {
+describe('Update tasks', async function () {
   const data = {}
-  let taskId = '90491fbd-ba8f-45bb-b591-231445f0900d'
+  let taskId = await getTaskId()
   it('respond with 500 error', function (done) {
     request(app)
       .put(`/tasks/${taskId}`)
@@ -86,8 +87,8 @@ describe('PUT /tasks', function () {
 });
 
 
-describe('DELETE /tasks', function () {
-  let taskId = '90491fbd-ba8f-45bb-b591-231445f0900d'
+describe('Delete tasks', async function () {
+  let taskId = await getTaskId()
   it('respond with 200 task deleted', function (done) {
     request(app)
       .delete(`/tasks/${taskId}`)

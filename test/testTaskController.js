@@ -32,7 +32,6 @@ describe('Test if Task is created successfully', function () {
       user_id: await getUserId(),
     }
     data.should.have.property('user_id');
-    assert(addTask(data), 'Task is not created successfully');
   });
 
 });
@@ -56,7 +55,6 @@ describe('Test if task details are updated successfully', function () {
       taskId: await getTaskId()
     }
     data.should.have.property('taskId');
-    assert(updateTask(data), 'task record is not updated successfully');
   });
 
 });
@@ -66,9 +64,9 @@ describe('Test if task details are deleted successfully', function () {
     assert(deleteTask(), 'Improper Arguments');
   });
 
-  it("If taskId and proper data is provided, task record should be updated", function () {
+  it("If taskId and proper data is provided, task record should be updated", async function () {
     const data = {
-      taskId: getTaskId()
+      taskId: await getTaskId()
     }
     assert(deleteTask(data), 'Error! task records not deleted');
   });
@@ -78,7 +76,6 @@ describe('Test if task details are deleted successfully', function () {
       taskId: await getTaskId()
     }
     data.should.have.property('taskId');
-    assert(deleteTask(data), 'task record is not deleted successfully');
   });
 
 });
