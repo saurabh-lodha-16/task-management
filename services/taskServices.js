@@ -66,26 +66,19 @@ export async function deleteTask(taskId) {
 }
 
 export async function getAllTasks(user_id) {
-  let data = [];
-  if (!user_id) {
-    const taskInstance = await tasks.findAll({
-      where: { deleted: false }
-    });
-    data = taskInstance;
-  } else {
-    const taskInstance = await users.findOne({
-      include: [
-        {
-          model: tasks
-        }
-      ],
-      where: { id: user_id }
-    });
-    if (taskInstance) data = taskInstance.tasks;
+  let query = { deleted: false };
+  if (user_id) {
+    query.user_id = user_id;
   }
+
+  const taskInstance = await tasks.findAll({
+    where: query
+  });
+
   const taskArray = [];
+
   //extracting only necessary information
-  for (let task of data) {
+  for (let task of taskInstance) {
     taskArray.push({
       id: task.id,
       title: task.title,

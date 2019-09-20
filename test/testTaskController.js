@@ -7,7 +7,9 @@ chai.use(chaiAsPromised).should();
 const chaiHttp = require('chai-http');
 const app = require('../app');
 chai.use(chaiHttp);
-const should = require('chai').should()
+const should = require('chai').should();
+import { getUserId } from '../testFunctions/generateTestUser';
+import { getTaskId } from '../testFunctions/generateTestTask';
 
 
 describe('Test if Task is created successfully', function () {
@@ -16,18 +18,18 @@ describe('Test if Task is created successfully', function () {
 
   });
 
-  it("If proper data is provided, task should be created", function () {
+  it("If proper data is provided, task should be created", async function () {
     const data = {
       title: 'Book Event',
       description: 'Book event for football',
-      user_id: 'cd1eac6a-3637-4fe5-8722-f7c5fddbf00d',
+      user_id: await getUserId(),
     }
     assert(addTask(data), 'Task is not added successfully');
   });
 
-  it("Data should include user_id property", function () {
+  it("Data should include user_id property", async function () {
     const data = {
-      user_id: 'cd1eac6a-3637-4fe5-8722-f7c5fddbf00d',
+      user_id: await getUserId(),
     }
     data.should.have.property('user_id');
     assert(addTask(data), 'Task is not created successfully');
@@ -40,18 +42,18 @@ describe('Test if task details are updated successfully', function () {
     assert(updateTask(), 'Improper Arguments');
   });
 
-  it("If taskId and proper data is provided, task record should be updated", function () {
+  it("If taskId and proper data is provided, task record should be updated", async function () {
     const data = {
       title: 'Book Hall',
       description: 'Book event for football',
-      taskId: '90491fbd-ba8f-45bb-b591-231445f0900d',
+      taskId: await getTaskId(),
     }
     assert(updateTask(data), 'task records not updated');
   });
 
-  it("Data should include taskId property", function () {
+  it("Data should include taskId property", async function () {
     const data = {
-      taskId: '90491fbd-ba8f-45bb-b591-231445f0900d'
+      taskId: await getTaskId()
     }
     data.should.have.property('taskId');
     assert(updateTask(data), 'task record is not updated successfully');
@@ -66,14 +68,14 @@ describe('Test if task details are deleted successfully', function () {
 
   it("If taskId and proper data is provided, task record should be updated", function () {
     const data = {
-      taskId: '90491fbd-ba8f-45bb-b591-231445f0900d',
+      taskId: getTaskId()
     }
     assert(deleteTask(data), 'Error! task records not deleted');
   });
 
-  it("Data should include taskId property", function () {
+  it("Data should include taskId property", async function () {
     const data = {
-      taskId: '90491fbd-ba8f-45bb-b591-231445f0900d'
+      taskId: await getTaskId()
     }
     data.should.have.property('taskId');
     assert(deleteTask(data), 'task record is not deleted successfully');

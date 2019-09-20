@@ -1,7 +1,9 @@
 const request = require('supertest');
 const app = require('../app');
+import { randomString } from '../testFunctions/randomString';
+import { getUserId } from '../testFunctions/generateTestUser';
 
-describe('GET /users', function () {
+describe('Get Users', function () {
   it('respond with json containing a list of all users', function (done) {
     request(app)
       .get('/users')
@@ -11,9 +13,9 @@ describe('GET /users', function () {
   });
 });
 
-describe('POST /users', function () {
+describe('Add User', function () {
   let data = {
-    user_name: 'dummy',
+    user_name: randomString(10),
   }
   it('respond with User Created Successfully', function (done) {
     request(app)
@@ -29,7 +31,7 @@ describe('POST /users', function () {
   });
 });
 
-describe('POST /users', function () {
+describe('Add User', function () {
   let data = {}
   it('respond with 500 not created', function (done) {
     request(app)
@@ -46,11 +48,12 @@ describe('POST /users', function () {
   });
 });
 
-describe('PUT /users', function () {
+describe('Update user', async function () {
   let data = {
     user_name: 'Test Update',
   }
-  let id = 'e6535f6d-e9bc-488b-804b-018c4d87c37c';
+
+  let id = await getUserId();
   it('respond with 200 and User Record updated', function (done) {
     request(app)
       .put(`/users/${id}`)
