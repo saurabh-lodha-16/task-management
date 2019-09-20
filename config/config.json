@@ -1,6 +1,6 @@
 {
   "development": {
-    "username": "saucr16",
+    "username": "admin",
     "password": "123456",
     "database": "mydb",
     "host": "127.0.0.1",
