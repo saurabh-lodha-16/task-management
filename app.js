@@ -1,15 +1,13 @@
 import express from "express";
-import path from "path";
 import bodyParser from "body-parser";
 import Model from "./models";
 import userRoutes from "./routes/users";
 import taskRoutes from "./routes/tasks.js";
 import http from "http";
 import IO from "socket.io";
-const cors = require('cors')
+import cors from "cors";
 
-
-const port = 3000;
+const port = process.env.PORT || 8000;
 const app = express();
 const server = http.createServer(app);
 
