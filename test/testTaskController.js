@@ -8,9 +8,9 @@ const chaiHttp = require('chai-http');
 const app = require('../app');
 chai.use(chaiHttp);
 const should = require('chai').should();
-import { getUserId } from '../testFunctions/generateTestUser';
-import { getTaskId } from '../testFunctions/generateTestTask';
-
+import { getUserId, generateTestUser } from '../testFunctions/generateTestUser';
+import { getTaskId, taskAdd } from '../testFunctions/generateTestTask';
+let user_data = generateTestUser();
 
 describe('Test if Task is created successfully', function () {
   it("If arguments are null, it should return error", async function () {
@@ -22,14 +22,14 @@ describe('Test if Task is created successfully', function () {
     const data = {
       title: 'Book Event',
       description: 'Book event for football',
-      user_id: await getUserId(),
+      user_id: user_data.user_id
     }
     assert(addTask(data), 'Task is not added successfully');
   });
 
   it("Data should include user_id property", async function () {
     const data = {
-      user_id: await getUserId(),
+      user_id: user_data.user_id
     }
     data.should.have.property('user_id');
   });
@@ -37,22 +37,24 @@ describe('Test if Task is created successfully', function () {
 });
 
 describe('Test if task details are updated successfully', function () {
+
   it("If arguments are null, it should return error", async function () {
     assert(updateTask(), 'Improper Arguments');
   });
 
   it("If taskId and proper data is provided, task record should be updated", async function () {
+    let taskId = await getTaskId()
     const data = {
-      title: 'Book Hall',
+      title: 'Book Hall1',
       description: 'Book event for football',
-      taskId: await getTaskId(),
+      taskId: taskId,
     }
     assert(updateTask(data), 'task records not updated');
   });
 
   it("Data should include taskId property", async function () {
     const data = {
-      taskId: await getTaskId()
+      taskId: 'testId'
     }
     data.should.have.property('taskId');
   });
@@ -60,6 +62,7 @@ describe('Test if task details are updated successfully', function () {
 });
 
 describe('Test if task details are deleted successfully', function () {
+
   it("If arguments are null, it should return error", async function () {
     assert(deleteTask(), 'Improper Arguments');
   });
@@ -73,7 +76,7 @@ describe('Test if task details are deleted successfully', function () {
 
   it("Data should include taskId property", async function () {
     const data = {
-      taskId: await getTaskId()
+      taskId: 'testId'
     }
     data.should.have.property('taskId');
   });
@@ -91,6 +94,4 @@ describe('Test if Tasks are retrived successfully', function () {
     let response = await getAllTasks();
     response.should.have.property('data');
   });
-
-
 });
